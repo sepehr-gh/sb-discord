@@ -11,6 +11,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DiscordCommand {
-    String command() default "";
-    String description() default "";
+    String name();
+    String description() default "Description not available";
 }
