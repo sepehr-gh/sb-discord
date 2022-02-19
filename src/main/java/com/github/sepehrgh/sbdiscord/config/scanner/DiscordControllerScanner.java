@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Map;
 
 
@@ -39,7 +40,7 @@ public class DiscordControllerScanner {
             Class<?> aClass = AopUtils.getTargetClass(discordControllerBean);
             for (Method method : aClass.getMethods()) {
                 if (method.isAnnotationPresent(DiscordCommand.class)){
-                    assert method.isAccessible();
+                    assert (method.getModifiers() & Modifier.PUBLIC) != 0;
                     DiscordCommand annotation = method.getAnnotation(DiscordCommand.class);
                     this.commandRegistry.register(Command.builder()
                             .clazz(aClass)

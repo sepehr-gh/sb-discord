@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
-@Target({ElementType.TYPE})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DiscordCommand {
     String name();
