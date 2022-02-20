@@ -3,6 +3,8 @@ package com.github.sepehrgh.sbdiscord.registry;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.var;
+
 import java.lang.reflect.Method;
 
 @Getter
@@ -15,17 +17,13 @@ public class Command {
     private Method method;
 
     //TODO
-    protected String getParamAtIndex(int i){
-        return "";
-    }
-
-    //TODO
     protected boolean isValid(String... params){
         return false;
     }
 
     //TODO
     public void call(String... params){
+        var methodParams = this.method.getParameters();
 
     }
 }

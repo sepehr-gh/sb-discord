@@ -13,6 +13,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DiscordParameter {
-    boolean required() default true;
+    boolean required() default false;
     String value() default "";
+    String name() default "";
 }
