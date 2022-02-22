@@ -10,10 +10,10 @@ import java.lang.annotation.Target;
 
 
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
-@Target({ElementType.TYPE})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DiscordParameter {
-    boolean required() default false;
+    boolean required() default true;
     String value() default "";
     String name() default "";
 }

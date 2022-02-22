@@ -42,16 +42,16 @@ public class CommandParser {
             }else {
                 String input = inputs[i];
                 if (this.isAssignableParam(input)){
-                    if (hadAnAssignableParam){
-                        throw new CommandParseException(
-                            "Can't use none-assignable-param after using one"
-                        );
-                    }
                     hadAnAssignableParam = true;
                     String paramName = this.getAssignableParamName(input);
                     int indexOfParameter = this.getIndexOfParameter(paramName, methodParameters);
                     output[indexOfParameter] = input.replace(paramName + "=", "");
                 }else {
+                    if (hadAnAssignableParam){
+                        throw new CommandParseException(
+                                "Can't use none-assignable-param after using one"
+                        );
+                    }
                     output[i] = input;
                 }
             }
@@ -75,7 +75,7 @@ public class CommandParser {
         throw new CommandParseException(String.format("No parameter found with name '%s'", parameterName));
     }
 
-    public String[] parse(String input) throws Exception {
+    public String[] parse(String input) throws CommandParseException {
         List<String> texts = new ArrayList<>();
 
         this.extractTextsIntoList(input, texts);
@@ -121,8 +121,8 @@ public class CommandParser {
         for (Parameter parameter : this.method.getParameters()) {
             DiscordParameter discordParameter = parameter.getAnnotation(DiscordParameter.class);
             String name = null;
-            if (discordParameter != null){
-                name = discordParameter.name().equals("") ? null : discordParameter.name();
+            if (discordParameter != null && !discordParameter.name().equals("")){
+                name = discordParameter.name();
             }else {
                 name = parameter.getName();
             }
