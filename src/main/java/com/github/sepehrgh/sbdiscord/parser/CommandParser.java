@@ -7,6 +7,8 @@ import org.springframework.lang.Nullable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -78,15 +80,16 @@ public class CommandParser {
     public String[] parse(String input) throws CommandParseException {
         List<String> texts = new ArrayList<>();
 
-        this.extractTextsIntoList(input, texts);
+        input = this.extractTextsIntoList(input, texts);
 
         String[] params = input.split(" ");
+        params = this.parse(params);
         this.fillTexts(params, texts);
 
-        return this.parse(params);
+        return params;
     }
 
-    private void extractTextsIntoList(String input, List<String> texts){
+    private String extractTextsIntoList(String input, List<String> texts){
         if (input.contains("\"")){
             Pattern p = Pattern.compile(DOUBLE_QUOTE_REGEX);
             Matcher m = p.matcher(input);
@@ -96,13 +99,14 @@ public class CommandParser {
                 texts.add(txt);
             }
         }
+        return input;
     }
 
     private void fillTexts(String[] params, List<String> texts){
         int z = 0;
         for (int i = 0; i < params.length; i++){
-            if (params[i].equals(TO_REPLACE)){
-                params[i] = texts.get(z);
+            if (params[i].contains(TO_REPLACE)){
+                params[i] = params[i].replace(TO_REPLACE, texts.get(z));
                 z++;
             }
         }
