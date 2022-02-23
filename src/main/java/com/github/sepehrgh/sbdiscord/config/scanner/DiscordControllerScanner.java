@@ -43,11 +43,10 @@ public class DiscordControllerScanner {
                     assert (method.getModifiers() & Modifier.PUBLIC) != 0;
                     DiscordCommand annotation = method.getAnnotation(DiscordCommand.class);
                     this.commandRegistry.register(Command.builder()
-                            .clazz(aClass)
+                            .object(discordControllerBean)
                             .name(annotation.name())
                             .description(annotation.description())
                             .method(method)
-                            .clazz(aClass)
                             .build());
                 }
             }

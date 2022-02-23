@@ -1,11 +1,13 @@
 package com.github.sepehrgh.sbdiscord.registry;
 
+import com.github.sepehrgh.sbdiscord.exceptions.CommandParseException;
 import com.github.sepehrgh.sbdiscord.parser.CommandParser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.var;
+import lombok.Setter;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 @Getter
@@ -14,15 +16,10 @@ import java.lang.reflect.Method;
 public class Command {
     private final String name;
     private final String description;
-    private final Class<?> clazz;
+    @Setter
+    private Object object;
     private final Method method;
     private CommandParser parser;
-
-
-    //TODO
-    protected boolean isValid(String... params){
-        return false;
-    }
 
     public CommandParser getParser(){
         synchronized (this){
@@ -33,9 +30,15 @@ public class Command {
         return this.parser;
     }
 
-    //TODO
-    public void call(String... params){
-        var methodParams = this.method.getParameters();
+    public void call(String params) throws CommandParseException, InvocationTargetException, IllegalAccessException {
+        this.callMethod((Object[]) this.getParser().parse(params));
+    }
 
+    public void call(String... params) throws CommandParseException, InvocationTargetException, IllegalAccessException {
+        this.callMethod((Object[]) this.getParser().parse(params));
+    }
+
+    private void callMethod(Object... params) throws InvocationTargetException, IllegalAccessException {
+        this.getMethod().invoke(this.getObject(), params);
     }
 }
