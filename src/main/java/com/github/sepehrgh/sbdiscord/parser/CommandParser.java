@@ -2,13 +2,10 @@ package com.github.sepehrgh.sbdiscord.parser;
 
 import com.github.sepehrgh.sbdiscord.annotations.DiscordParameter;
 import com.github.sepehrgh.sbdiscord.exceptions.CommandParseException;
-import org.springframework.lang.Nullable;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,11 +59,7 @@ public class CommandParser {
         return output;
     }
 
-    private int getIndexOfParameter(String parameterName, @Nullable Parameter[] methodParameters) throws CommandParseException {
-        if (methodParameters == null){
-            methodParameters = this.method.getParameters();
-        }
-
+    private int getIndexOfParameter(String parameterName, Parameter[] methodParameters) throws CommandParseException {
         for (int i = 0; i < methodParameters.length; i++) {
             if (methodParameters[i].getName().equals(parameterName) || methodParameters[i].getAnnotation(
                     DiscordParameter.class
@@ -74,7 +67,7 @@ public class CommandParser {
                 return i;
         }
 
-        throw new CommandParseException(String.format("No parameter found with name '%s'", parameterName));
+        throw new CommandParseException(String.format("Strange! No parameter found with name '%s'", parameterName));
     }
 
     public String[] parse(String input) throws CommandParseException {
@@ -113,8 +106,6 @@ public class CommandParser {
     }
 
     private String getAssignableParamName(String input){
-        if (!input.contains("="))
-            throw new IllegalStateException("Input is not an AssignableParam");
         return input.split("=")[0].trim();
     }
 
