@@ -6,9 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 @Getter
 @Builder
@@ -36,6 +38,10 @@ public class Command {
 
     public void call(String... params) throws CommandParseException, InvocationTargetException, IllegalAccessException {
         this.callMethod((Object[]) this.getParser().parse(params));
+    }
+
+    public void call(List<OptionMapping> options) throws CommandParseException, InvocationTargetException, IllegalAccessException {
+        this.callMethod((Object[]) this.getParser().parse(options));
     }
 
     private void callMethod(Object... params) throws InvocationTargetException, IllegalAccessException {

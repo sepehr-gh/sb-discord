@@ -2,6 +2,7 @@ package com.github.sepehrgh.sbdiscord.parser;
 
 import com.github.sepehrgh.sbdiscord.annotations.DiscordParameter;
 import com.github.sepehrgh.sbdiscord.exceptions.CommandParseException;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -18,6 +19,65 @@ public class CommandParser {
 
     public CommandParser(Method method) {
         this.method = method;
+    }
+
+    /**
+     * Parser for slash commands
+     * @param options options sent by slash command
+     * @return object array to call the method with
+     * @throws CommandParseException when parameter is missing or is required
+     */
+    public Object[] parse(List<OptionMapping> options) throws CommandParseException {
+        Parameter[] methodParameters = this.method.getParameters();
+        Object[] output = new Object[methodParameters.length];
+
+        for(int i = 0; i < methodParameters.length; i++){
+            DiscordParameter discordParameter = methodParameters[i].getAnnotation(DiscordParameter.class);
+
+            for (OptionMapping optionMapping: options){
+                if (optionMapping.getName().equals(discordParameter.name())){
+                    output[i] = this.getOptionValue(optionMapping, methodParameters[i]);
+                    break;
+                }
+            }
+
+            if ((output[i] == null || options.size() < i + 1) && discordParameter.required()){
+                throw new CommandParseException(
+                        String.format(
+                                "Parameter is missing: %s",
+                                discordParameter.name()
+                        )
+                );
+            }
+        }
+
+        return null;
+    }
+
+    private Object getOptionValue(OptionMapping optionMapping, Parameter parameter) {
+        switch (optionMapping.getType()) {
+            case BOOLEAN:
+                return optionMapping.getAsBoolean();
+            case ROLE:
+                return optionMapping.getAsRole();
+            case CHANNEL:
+                return optionMapping.getAsGuildChannel();
+            case INTEGER:
+                if (parameter.getType().equals(Integer.class)) {
+                    return new Long(optionMapping.getAsLong()).intValue();
+                }else if (parameter.getType().equals(Double.class)){
+                    return optionMapping.getAsDouble();
+                }
+                return optionMapping.getAsLong();
+            case USER:
+                return optionMapping.getAsMember();
+            case STRING:
+                return optionMapping.getAsString();
+            case MENTIONABLE:
+                return optionMapping.getAsMentionable();
+            default:
+                return null;
+        }
     }
 
     public String[] parse(String[] inputs) throws CommandParseException {
