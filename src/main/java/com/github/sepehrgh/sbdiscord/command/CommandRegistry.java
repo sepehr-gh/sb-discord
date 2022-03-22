@@ -1,4 +1,4 @@
-package com.github.sepehrgh.sbdiscord.registry;
+package com.github.sepehrgh.sbdiscord.command;
 
 import lombok.Getter;
 import org.springframework.stereotype.Service;

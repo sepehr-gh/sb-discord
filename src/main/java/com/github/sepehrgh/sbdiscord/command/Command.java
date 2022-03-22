@@ -1,4 +1,4 @@
-package com.github.sepehrgh.sbdiscord.registry;
+package com.github.sepehrgh.sbdiscord.command;
 
 import com.github.sepehrgh.sbdiscord.exceptions.CommandParseException;
 import com.github.sepehrgh.sbdiscord.parser.CommandParser;

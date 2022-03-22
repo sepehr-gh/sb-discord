@@ -1,7 +1,7 @@
 package com.github.sepehrgh.sbdiscord;
 
 import com.github.sepehrgh.sbdiscord.config.SpringbootDiscordAutoConfiguration;
-import com.github.sepehrgh.sbdiscord.registry.CommandRegistry;
+import com.github.sepehrgh.sbdiscord.command.CommandRegistry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

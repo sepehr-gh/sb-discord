@@ -2,8 +2,8 @@ package com.github.sepehrgh.sbdiscord.config.scanner;
 
 import com.github.sepehrgh.sbdiscord.annotations.DiscordCommand;
 import com.github.sepehrgh.sbdiscord.annotations.DiscordController;
-import com.github.sepehrgh.sbdiscord.registry.Command;
-import com.github.sepehrgh.sbdiscord.registry.CommandRegistry;
+import com.github.sepehrgh.sbdiscord.command.Command;
+import com.github.sepehrgh.sbdiscord.command.CommandRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
