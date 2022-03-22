@@ -19,4 +19,18 @@ public class TestController {
     ){
         return true;
     }
+
+    @DiscordCommand(name = "failingParameterType")
+    public boolean failingParameterType(
+            @DiscordParameter Exception parameter1
+    ){
+        return true;
+    }
+
+    @DiscordCommand(name = "failing Alpha Numeric")
+    public boolean failingAlphaNumeric(
+            @DiscordParameter Integer in
+    ){
+        return true;
+    }
 }

@@ -25,6 +25,19 @@ class ControllerCommandScanTest {
 		Assert.isTrue(commandRegistry.findCommandByName(commandName).isPresent(), String.format(
 				"Command %s is not registered", commandName
 		));
+
+
+		// unknown parameter type should fail
+		commandName = "failingParameterType";
+		Assert.isTrue(!commandRegistry.findCommandByName(commandName).isPresent(), String.format(
+				"Command %s is registered", commandName
+		));
+
+		// none alphanumeric name should fail
+		commandName = "failing Alpha Numeric";
+		Assert.isTrue(!commandRegistry.findCommandByName(commandName).isPresent(), String.format(
+				"Command %s is registered", commandName
+		));
 	}
 
 }
