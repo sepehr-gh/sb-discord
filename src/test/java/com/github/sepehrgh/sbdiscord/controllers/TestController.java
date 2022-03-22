@@ -20,6 +20,12 @@ public class TestController {
         return true;
     }
 
+    @DiscordCommand(name = "noparam")
+    public boolean noparam(){
+        return true;
+    }
+
+
     @DiscordCommand(name = "failingParameterType")
     public boolean failingParameterType(
             @DiscordParameter Exception parameter1

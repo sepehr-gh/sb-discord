@@ -16,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {SpringbootDiscordAutoConfiguration.class})
 public class CommandCallerTest {
@@ -25,11 +26,17 @@ public class CommandCallerTest {
     @Autowired
     public CommandCallerTest(CommandRegistry commandRegistry) {
         this.commandRegistry = Mockito.mock(CommandRegistry.class);
-        Optional<Command> parameterCommand = commandRegistry.findCommandByName("parameterCommand");
-        Command command = parameterCommand.get();
         this.mockTestController = Mockito.mock(TestController.class);
-        command.setObject(this.mockTestController);
-        Mockito.when(this.commandRegistry.findCommandByName("parameterCommand")).thenReturn(Optional.of(command));
+
+        Command parameterCommand = commandRegistry.findCommandByName("parameterCommand").get();
+        parameterCommand.setObject(this.mockTestController);
+
+        Command noParameterCommand = commandRegistry.findCommandByName("noparam").get();
+        noParameterCommand.setObject(this.mockTestController);
+
+
+        Mockito.when(this.commandRegistry.findCommandByName("parameterCommand")).thenReturn(Optional.of(parameterCommand));
+        Mockito.when(this.commandRegistry.findCommandByName("noparam")).thenReturn(Optional.of(noParameterCommand));
     }
 
     @Test
@@ -47,5 +54,13 @@ public class CommandCallerTest {
 
         optionalCommand.get().call("A B parameter3=\"Hello There\"");
         Mockito.verify(this.mockTestController).parameterCommand("A", "B", "Hello There");
+    }
+
+    @Test
+    public void noParamMethodCall() throws CommandParseException, InvocationTargetException, IllegalAccessException {
+        Optional<Command> optionalCommand = this.commandRegistry.findCommandByName("noparam");
+        assert optionalCommand.isPresent();
+        optionalCommand.get().call(" ");
+        Mockito.verify(this.mockTestController).noparam();
     }
 }

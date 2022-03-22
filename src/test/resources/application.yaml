@@ -1,0 +1,3 @@
+spring:
+  discord:
+    enabled: true
