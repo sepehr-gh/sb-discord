@@ -18,7 +18,7 @@ import java.util.Optional;
 
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = {SpringbootDiscordAutoConfiguration.class})
+@SpringBootTest(classes = {SpringbootDiscordAutoConfiguration.class, SpringConfiguration.class})
 public class CommandCallerTest {
     private final TestController mockTestController;
     private final CommandRegistry commandRegistry;

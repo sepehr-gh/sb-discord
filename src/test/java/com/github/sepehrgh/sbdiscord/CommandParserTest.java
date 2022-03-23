@@ -16,7 +16,7 @@ import java.util.Optional;
 
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = {SpringbootDiscordAutoConfiguration.class})
+@SpringBootTest(classes = {SpringbootDiscordAutoConfiguration.class, SpringConfiguration.class})
 public class CommandParserTest {
     private final CommandParser parser;
 
@@ -44,13 +44,13 @@ public class CommandParserTest {
         Assertions.assertEquals("2", output[1]);
         Assertions.assertEquals("4", output[2]);
 
-        output = parser.parse("1 p2=2");
+        output = parser.parse("1 parameter2=2");
         Assertions.assertEquals(3, output.length, "Size of output is not valid");
         Assertions.assertEquals("1", output[0]);
         Assertions.assertEquals("2", output[1]);
         Assertions.assertEquals("4", output[2]);
 
-        output = parser.parse("1 p2=2 parameter3=5");
+        output = parser.parse("1 parameter2=2 parameter3=5");
         Assertions.assertEquals(3, output.length, "Size of output is not valid");
         Assertions.assertEquals("1", output[0]);
         Assertions.assertEquals("2", output[1]);
@@ -61,7 +61,7 @@ public class CommandParserTest {
     @Test
     public void testParseErrors() throws CommandParseException {
         Assertions.assertThrows(CommandParseException.class, () -> {
-            parser.parse("1 p2=2 unknown=5");
+            parser.parse("1 parameter2=2 unknown=5");
         });
 
         String[] output = parser.parse("1 p2 unknown=5");
@@ -75,7 +75,7 @@ public class CommandParserTest {
 
     @Test
     public void testFillTexts() throws CommandParseException {
-        String[] output = parser.parse("1 p2=\"hello sir\"");
+        String[] output = parser.parse("1 parameter2=\"hello sir\"");
         Assertions.assertEquals("hello sir", output[1]);
     }
 }

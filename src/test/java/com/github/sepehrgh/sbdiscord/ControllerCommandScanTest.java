@@ -11,7 +11,7 @@ import org.springframework.util.Assert;
 
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = {SpringbootDiscordAutoConfiguration.class})
+@SpringBootTest(classes = {SpringbootDiscordAutoConfiguration.class, SpringConfiguration.class})
 class ControllerCommandScanTest {
 	private final CommandRegistry commandRegistry;
 
