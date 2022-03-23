@@ -15,5 +15,6 @@ import java.lang.annotation.Target;
 public @interface DiscordParameter {
     boolean required() default true;
     String value() default "";
-    String name() default "";
+    String description() default "description not provided";
+    String name();
 }

@@ -13,9 +13,9 @@ public class TestController {
 
     @DiscordCommand(name = "parameterCommand")
     public boolean parameterCommand(
-            @DiscordParameter String parameter1,
+            @DiscordParameter(name="p1") String parameter1,
             @DiscordParameter(name = "p2") String parameter2,
-            @DiscordParameter(required = false, value = "4") String parameter3
+            @DiscordParameter(name="p3", required = false, value = "4") String parameter3
     ){
         return true;
     }
@@ -28,14 +28,14 @@ public class TestController {
 
     @DiscordCommand(name = "failingParameterType")
     public boolean failingParameterType(
-            @DiscordParameter Exception parameter1
+            @DiscordParameter(name = "p1") Exception parameter1
     ){
         return true;
     }
 
     @DiscordCommand(name = "failing Alpha Numeric")
     public boolean failingAlphaNumeric(
-            @DiscordParameter Integer in
+            @DiscordParameter(name = "in") Integer in
     ){
         return true;
     }

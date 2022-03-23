@@ -51,7 +51,7 @@ public class CommandParser {
             }
         }
 
-        return null;
+        return output;
     }
 
     private Object getOptionValue(OptionMapping optionMapping, Parameter parameter) {
@@ -63,6 +63,7 @@ public class CommandParser {
             case CHANNEL:
                 return optionMapping.getAsGuildChannel();
             case INTEGER:
+            case NUMBER:
                 if (parameter.getType().equals(Integer.class)) {
                     return new Long(optionMapping.getAsLong()).intValue();
                 }else if (parameter.getType().equals(Double.class)){
