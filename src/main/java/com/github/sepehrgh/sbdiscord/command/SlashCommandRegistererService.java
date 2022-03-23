@@ -1,5 +1,6 @@
 package com.github.sepehrgh.sbdiscord.command;
 
+import com.github.sepehrgh.sbdiscord.annotations.DiscordCommand;
 import com.github.sepehrgh.sbdiscord.annotations.DiscordParameter;
 import com.github.sepehrgh.sbdiscord.config.properties.SBDiscordProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -17,15 +18,13 @@ import java.util.Map;
 
 @Service
 @Slf4j
-public class CommandRegistererService {
-    private final JDA jda;
+public class SlashCommandRegistererService {
     private final CommandRegistry commandRegistry;
     private final SBDiscordProperties sbDiscordProperties;
     private final Map<Class<?>, OptionType> typeMap;
 
     @Autowired
-    public CommandRegistererService(JDA jda, CommandRegistry commandRegistry, SBDiscordProperties sbDiscordProperties) {
-        this.jda = jda;
+    public SlashCommandRegistererService(CommandRegistry commandRegistry, SBDiscordProperties sbDiscordProperties) {
         this.commandRegistry = commandRegistry;
         this.sbDiscordProperties = sbDiscordProperties;
         this.typeMap = new HashMap<>();
@@ -46,7 +45,7 @@ public class CommandRegistererService {
         this.typeMap.put(String.class, OptionType.STRING);
     }
 
-    public void registerCommands(){
+    public void registerCommands(JDA jda){
         if (!sbDiscordProperties.isSlashCommandEnabled())
             return;
 
@@ -57,7 +56,13 @@ public class CommandRegistererService {
                 DiscordParameter discordParameter = parameter.getAnnotation(DiscordParameter.class);
                 commandData.addOption(this.typeMap.get(parameter.getType()), discordParameter.name(), discordParameter.description(), discordParameter.required());
             }
-            this.jda.upsertCommand(commandData).complete();
+            if (command.getScope().equals(DiscordCommand.Scope.SERVER)) {
+                jda.getGuilds().forEach(guild -> {
+                    guild.upsertCommand(commandData).complete();
+                });
+            }else {
+                jda.upsertCommand(commandData).complete();
+            }
         });
     }
 

@@ -1,5 +1,6 @@
 package com.github.sepehrgh.sbdiscord.command;
 
+import com.github.sepehrgh.sbdiscord.annotations.DiscordCommand;
 import com.github.sepehrgh.sbdiscord.exceptions.CommandParseException;
 import com.github.sepehrgh.sbdiscord.parser.CommandParser;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 public class Command {
     private final String name;
     private final String description;
+    private final DiscordCommand.Scope scope;
     @Setter
     private Object object;
     private final Method method;

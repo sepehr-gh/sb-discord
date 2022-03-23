@@ -46,6 +46,7 @@ public class DiscordControllerScanner {
                     DiscordCommand annotation = method.getAnnotation(DiscordCommand.class);
                     if (this.isValid(method, annotation)){
                         this.commandRegistry.register(Command.builder()
+                                .scope(annotation.scope())
                                 .object(discordControllerBean)
                                 .name(annotation.name())
                                 .description(annotation.description())

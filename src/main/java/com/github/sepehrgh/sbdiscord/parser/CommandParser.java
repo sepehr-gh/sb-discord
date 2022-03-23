@@ -34,6 +34,7 @@ public class CommandParser {
         for(int i = 0; i < methodParameters.length; i++){
             DiscordParameter discordParameter = methodParameters[i].getAnnotation(DiscordParameter.class);
 
+            // Find any option mapping that matches the name of current parameter in the loop
             for (OptionMapping optionMapping: options){
                 if (optionMapping.getName().equals(discordParameter.name())){
                     output[i] = this.getOptionValue(optionMapping, methodParameters[i]);
@@ -52,33 +53,6 @@ public class CommandParser {
         }
 
         return output;
-    }
-
-    private Object getOptionValue(OptionMapping optionMapping, Parameter parameter) {
-        switch (optionMapping.getType()) {
-            case BOOLEAN:
-                return optionMapping.getAsBoolean();
-            case ROLE:
-                return optionMapping.getAsRole();
-            case CHANNEL:
-                return optionMapping.getAsGuildChannel();
-            case INTEGER:
-            case NUMBER:
-                if (parameter.getType().equals(Integer.class)) {
-                    return new Long(optionMapping.getAsLong()).intValue();
-                }else if (parameter.getType().equals(Double.class)){
-                    return optionMapping.getAsDouble();
-                }
-                return optionMapping.getAsLong();
-            case USER:
-                return optionMapping.getAsMember();
-            case STRING:
-                return optionMapping.getAsString();
-            case MENTIONABLE:
-                return optionMapping.getAsMentionable();
-            default:
-                return null;
-        }
     }
 
     public String[] parse(String[] inputs) throws CommandParseException {
@@ -120,16 +94,6 @@ public class CommandParser {
         return output;
     }
 
-    private int getIndexOfParameter(String parameterName, Parameter[] methodParameters) throws CommandParseException {
-        for (int i = 0; i < methodParameters.length; i++) {
-            if (methodParameters[i].getName().equals(parameterName) || methodParameters[i].getAnnotation(
-                    DiscordParameter.class
-            ).name().equals(parameterName))
-                return i;
-        }
-
-        throw new CommandParseException(String.format("Strange! No parameter found with name '%s'", parameterName));
-    }
 
     public String[] parse(String input) throws CommandParseException {
         List<String> texts = new ArrayList<>();
@@ -141,6 +105,44 @@ public class CommandParser {
         this.fillTexts(params, texts);
 
         return params;
+    }
+
+    private Object getOptionValue(OptionMapping optionMapping, Parameter parameter) {
+        switch (optionMapping.getType()) {
+            case BOOLEAN:
+                return optionMapping.getAsBoolean();
+            case ROLE:
+                return optionMapping.getAsRole();
+            case CHANNEL:
+                return optionMapping.getAsGuildChannel();
+            case INTEGER:
+            case NUMBER:
+                if (parameter.getType().equals(Integer.class)) {
+                    return new Long(optionMapping.getAsLong()).intValue();
+                }else if (parameter.getType().equals(Double.class)){
+                    return optionMapping.getAsDouble();
+                }
+                return optionMapping.getAsLong();
+            case USER:
+                return optionMapping.getAsMember();
+            case STRING:
+                return optionMapping.getAsString();
+            case MENTIONABLE:
+                return optionMapping.getAsMentionable();
+            default:
+                return null;
+        }
+    }
+
+    private int getIndexOfParameter(String parameterName, Parameter[] methodParameters) throws CommandParseException {
+        for (int i = 0; i < methodParameters.length; i++) {
+            if (methodParameters[i].getName().equals(parameterName) || methodParameters[i].getAnnotation(
+                    DiscordParameter.class
+            ).name().equals(parameterName))
+                return i;
+        }
+
+        throw new CommandParseException(String.format("Strange! No parameter found with name '%s'", parameterName));
     }
 
     private String extractTextsIntoList(String input, List<String> texts){

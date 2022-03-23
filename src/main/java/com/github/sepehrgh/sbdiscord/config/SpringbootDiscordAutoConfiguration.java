@@ -22,7 +22,7 @@ public class SpringbootDiscordAutoConfiguration {
 
     @ConditionalOnMissingBean(JDA.class)
     @Bean
-    public JDA jda(SBDiscordProperties sbDiscordProperties, DiscordCommandListener discordCommandListener) throws LoginException {
+    public JDA jda(SBDiscordProperties sbDiscordProperties, DiscordCommandListener discordCommandListener) throws LoginException, InterruptedException {
         log.info("Creating JDA bean ...");
         net.dv8tion.jda.api.JDABuilder builder = net.dv8tion.jda.api.JDABuilder.createDefault(sbDiscordProperties.getToken());
         builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);

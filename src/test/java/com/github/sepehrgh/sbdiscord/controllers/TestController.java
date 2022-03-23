@@ -3,6 +3,7 @@ package com.github.sepehrgh.sbdiscord.controllers;
 import com.github.sepehrgh.sbdiscord.annotations.DiscordCommand;
 import com.github.sepehrgh.sbdiscord.annotations.DiscordController;
 import com.github.sepehrgh.sbdiscord.annotations.DiscordParameter;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 @DiscordController
 public class TestController {
@@ -37,6 +38,11 @@ public class TestController {
     public boolean failingAlphaNumeric(
             @DiscordParameter(name = "in") Integer in
     ){
+        return true;
+    }
+
+    @DiscordCommand(name="context")
+    public boolean testContext(GuildMessageReceivedEvent event){
         return true;
     }
 }

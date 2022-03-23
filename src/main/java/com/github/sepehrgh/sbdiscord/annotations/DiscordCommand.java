@@ -13,4 +13,9 @@ import java.lang.annotation.Target;
 public @interface DiscordCommand {
     String name();
     String description() default "Description not available";
+    Scope scope() default Scope.SERVER;
+
+    enum Scope {
+        SERVER, USER
+    }
 }
