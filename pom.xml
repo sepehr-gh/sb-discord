@@ -8,7 +8,7 @@
 		<version>2.6.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.github.sepehr-gh</groupId>
+	<groupId>com.github.sepgh</groupId>
 	<artifactId>discord-commands-starter</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Spring-boot Discord Commands Starter</name>
