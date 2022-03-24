@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.github.sepehr-gh</groupId>
-	<artifactId>sb-discord</artifactId>
+	<artifactId>discord-commands-starter</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Springboot Discord</name>
-	<description>Discord Plugin Integration with Sprintboot</description>
+	<name>Spring-boot Discord Commands Starter</name>
+	<description>Spring-boot integration for discord commands</description>
 	<packaging>jar</packaging>
 	<properties>
 		<java.version>1.8</java.version>
