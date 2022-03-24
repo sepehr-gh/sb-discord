@@ -21,8 +21,8 @@ public class CommandParserTest {
     private final CommandParser parser;
 
     public CommandParserTest(@Autowired CommandRegistry commandRegistry) {
-        Optional<Command> optionalCommand = commandRegistry.findCommandByName("parameterCommand");
-        Assertions.assertTrue(optionalCommand.isPresent(), String.format("%s command is not present", "parameterCommand"));
+        Optional<Command> optionalCommand = commandRegistry.findCommandByName("parametercommand");
+        Assertions.assertTrue(optionalCommand.isPresent(), String.format("%s command is not present", "parametercommand"));
 
         Command command = optionalCommand.get();
         this.parser = command.getParser();

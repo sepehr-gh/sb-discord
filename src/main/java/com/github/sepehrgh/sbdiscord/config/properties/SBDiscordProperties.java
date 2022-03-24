@@ -8,8 +8,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Getter
 @Setter
 public class SBDiscordProperties {
-    public boolean slashCommandEnabled = false;
-    public boolean basicCommandEnabled = true;
     public Character basicCommandSignature = '!';
     public boolean enabled;
     public String token;

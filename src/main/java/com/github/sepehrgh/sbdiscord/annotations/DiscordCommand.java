@@ -14,8 +14,13 @@ public @interface DiscordCommand {
     String name();
     String description() default "Description not available";
     Scope scope() default Scope.SERVER;
+    Type type() default Type.SLASH;
 
     enum Scope {
         SERVER, USER
+    }
+
+    enum Type {
+        SLASH, BASIC
     }
 }

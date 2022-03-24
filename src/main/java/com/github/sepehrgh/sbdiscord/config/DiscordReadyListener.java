@@ -1,11 +1,13 @@
-package com.github.sepehrgh.sbdiscord.config.scanner;
+package com.github.sepehrgh.sbdiscord.config;
 
 import com.github.sepehrgh.sbdiscord.annotations.DiscordCommand;
 import com.github.sepehrgh.sbdiscord.annotations.DiscordController;
 import com.github.sepehrgh.sbdiscord.command.Command;
 import com.github.sepehrgh.sbdiscord.command.CommandRegistry;
-import com.github.sepehrgh.sbdiscord.config.StaticConfiguration;
 import lombok.extern.slf4j.Slf4j;
+import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -16,19 +18,21 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.util.Map;
 
-
-@Slf4j
 @Component
-public class DiscordControllerScanner {
+@Slf4j
+public class DiscordReadyListener extends ListenerAdapter {
+    private final ApplicationContext applicationContext;
     private final CommandRegistry commandRegistry;
     private static final String ALPHANUMERIC_PATTERN = "^[a-zA-Z0-9]+$";
 
     @Autowired
-    public DiscordControllerScanner(CommandRegistry commandRegistry) {
+    public DiscordReadyListener(ApplicationContext applicationContext, CommandRegistry commandRegistry) {
+        this.applicationContext = applicationContext;
         this.commandRegistry = commandRegistry;
     }
 
-    public void scan(ApplicationContext applicationContext){
+    @Override
+    public void onReady(@NotNull ReadyEvent event) {
         Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(
                 DiscordController.class
         );
@@ -45,13 +49,18 @@ public class DiscordControllerScanner {
                 if (method.isAnnotationPresent(DiscordCommand.class)){
                     DiscordCommand annotation = method.getAnnotation(DiscordCommand.class);
                     if (this.isValid(method, annotation)){
-                        this.commandRegistry.register(Command.builder()
+                        Command command = Command.builder()
                                 .scope(annotation.scope())
+                                .type(annotation.type())
                                 .object(discordControllerBean)
                                 .name(annotation.name())
                                 .description(annotation.description())
                                 .method(method)
-                                .build());
+                                .build();
+                        this.commandRegistry.register(command);
+                        if (command.getType().equals(DiscordCommand.Type.SLASH)){
+                            command.register(event.getJDA());
+                        }
                     }
                 }
             }

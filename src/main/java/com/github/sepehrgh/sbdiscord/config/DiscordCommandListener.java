@@ -2,13 +2,11 @@ package com.github.sepehrgh.sbdiscord.config;
 
 import com.github.sepehrgh.sbdiscord.command.Command;
 import com.github.sepehrgh.sbdiscord.command.CommandRegistry;
-import com.github.sepehrgh.sbdiscord.command.SlashCommandRegistererService;
 import com.github.sepehrgh.sbdiscord.command.context.CommandContextHolder;
 import com.github.sepehrgh.sbdiscord.command.context.DefaultContextImpl;
 import com.github.sepehrgh.sbdiscord.config.properties.SBDiscordProperties;
 import com.github.sepehrgh.sbdiscord.exceptions.CommandParseException;
 import lombok.extern.slf4j.Slf4j;
-import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -21,12 +19,10 @@ import java.util.Optional;
 @Slf4j
 public class DiscordCommandListener extends ListenerAdapter {
     private final CommandRegistry commandRegistry;
-    private final SlashCommandRegistererService slashCommandRegistererService;
     private final SBDiscordProperties sbDiscordProperties;
 
-    public DiscordCommandListener(CommandRegistry commandRegistry, SlashCommandRegistererService slashCommandRegistererService, SBDiscordProperties sbDiscordProperties) {
+    public DiscordCommandListener(CommandRegistry commandRegistry, SBDiscordProperties sbDiscordProperties) {
         this.commandRegistry = commandRegistry;
-        this.slashCommandRegistererService = slashCommandRegistererService;
         this.sbDiscordProperties = sbDiscordProperties;
     }
 
@@ -72,10 +68,6 @@ public class DiscordCommandListener extends ListenerAdapter {
         }
     }
 
-    @Override
-    public void onReady(@NotNull ReadyEvent event) {
-        slashCommandRegistererService.registerCommands(event.getJDA());
-    }
 
     private String[] getCommandAndParameters(String message){
         message = message.replace("" + sbDiscordProperties.getBasicCommandSignature(), "");

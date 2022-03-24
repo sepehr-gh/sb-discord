@@ -28,20 +28,20 @@ public class CommandCallerTest {
         this.commandRegistry = Mockito.mock(CommandRegistry.class);
         this.mockTestController = Mockito.mock(TestController.class);
 
-        Command parameterCommand = commandRegistry.findCommandByName("parameterCommand").get();
+        Command parameterCommand = commandRegistry.findCommandByName("parametercommand").get();
         parameterCommand.setObject(this.mockTestController);
 
         Command noParameterCommand = commandRegistry.findCommandByName("noparam").get();
         noParameterCommand.setObject(this.mockTestController);
 
 
-        Mockito.when(this.commandRegistry.findCommandByName("parameterCommand")).thenReturn(Optional.of(parameterCommand));
+        Mockito.when(this.commandRegistry.findCommandByName("parametercommand")).thenReturn(Optional.of(parameterCommand));
         Mockito.when(this.commandRegistry.findCommandByName("noparam")).thenReturn(Optional.of(noParameterCommand));
     }
 
     @Test
     public void testMethodCall() throws CommandParseException, InvocationTargetException, IllegalAccessException {
-        Optional<Command> optionalCommand = this.commandRegistry.findCommandByName("parameterCommand");
+        Optional<Command> optionalCommand = this.commandRegistry.findCommandByName("parametercommand");
         assert optionalCommand.isPresent();
         optionalCommand.get().call("A B");
         Mockito.verify(this.mockTestController).parameterCommand("A", "B", "4");
