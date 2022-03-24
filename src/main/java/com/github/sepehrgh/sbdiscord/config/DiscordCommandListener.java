@@ -53,11 +53,13 @@ public class DiscordCommandListener extends ListenerAdapter {
         CommandContextHolder.setContext(DefaultContextImpl.builder()
                 .slashCommandEvent(Optional.of(event))
                 .build());
-        event.deferReply().queue();
         Optional<Command> optionalCommand = this.commandRegistry.findCommandByName(event.getName());
         if (optionalCommand.isPresent()){
+            Command command = optionalCommand.get();
+            if (command.isSlashDiffer())
+                event.deferReply().queue();
             try {
-                optionalCommand.get().call(event.getOptions());
+                command.call(event.getOptions());
             } catch (CommandParseException e) {
                 e.printStackTrace(); //todo: reply with parse exception explained
             } catch (Exception e) {

@@ -25,6 +25,7 @@ public class Command {
     private final String description;
     private final DiscordCommand.Scope scope;
     private final DiscordCommand.Type type;
+    private final boolean slashDiffer;
     @Setter
     private Object object;
     private final Method method;

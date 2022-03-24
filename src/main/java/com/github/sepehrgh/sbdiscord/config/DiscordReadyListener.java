@@ -52,6 +52,7 @@ public class DiscordReadyListener extends ListenerAdapter {
                         Command command = Command.builder()
                                 .scope(annotation.scope())
                                 .type(annotation.type())
+                                .slashDiffer(annotation.slashDiffer())
                                 .object(discordControllerBean)
                                 .name(annotation.name())
                                 .description(annotation.description())
