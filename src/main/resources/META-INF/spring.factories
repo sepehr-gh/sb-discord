@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.github.sepehrgh.sbdiscord.config.SpringbootDiscordAutoConfiguration
+  io.github.sepehrgh.sbdiscord.config.SpringbootDiscordAutoConfiguration
