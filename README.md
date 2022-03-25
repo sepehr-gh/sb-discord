@@ -1,5 +1,5 @@
 # discord-commands-starter
-Spring boot command wrapper for JDA
+Spring boot commandEntity wrapper for JDA
 
 ## Setup
 
@@ -22,11 +22,11 @@ To register commands, first create a class and annotate it with `@DiscordControl
 
 Use this annotation above your `DiscordController` methods to register them as commands.
 
-- Name: name of the command. Should be alphanumeric, but `slash commands` have their own limitations such as being lowercase.
-- Description (optional): description of the command
-- Scope (optional): determines the scope of the command. It can be `SERVER` for guild scope or `USER` for application scope.
-- Type (optional): determines if the command should be registered as a `SLASH` command or `BASIC`.
-- slashDiffer (optional) (default=true): determines if `differ` should be sent automatically when slash command is executed
+- Name: name of the commandEntity. Should be alphanumeric, but `slash commands` have their own limitations such as being lowercase.
+- Description (optional): description of the commandEntity
+- Scope (optional): determines the scope of the commandEntity. It can be `SERVER` for guild scope or `USER` for application scope.
+- Type (optional): determines if the commandEntity should be registered as a `SLASH` commandEntity or `BASIC`.
+- slashDiffer (optional) (default=true): determines if `differ` should be sent automatically when slash commandEntity is executed
 
 #### `@DiscordParameter`
 
@@ -34,7 +34,7 @@ Use this annotation behind your `DiscordCommand` method parameters.
 
 - Name: parameter name
 - Description (optional): description of the parameter
-- Value (optional): default value for the parameter (doesn't work in `SLASH` command type)
+- Value (optional): default value for the parameter (doesn't work in `SLASH` commandEntity type)
 - Required (optional) (default=true): determines if the parameter is required
 
 ### Configuration
@@ -70,6 +70,8 @@ public void register(@DiscordParameter(name = "name", description = "Enter your 
     event.getMessage().reply("You are registered :)").queue();
 }
 ```
+
+---
 
 To run a basic command in Discord, try:
 

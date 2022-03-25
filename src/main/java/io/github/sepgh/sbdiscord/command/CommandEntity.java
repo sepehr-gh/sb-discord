@@ -10,23 +10,29 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 @Getter
 @Builder
 @AllArgsConstructor
-public class Command {
+public class CommandEntity {
     private final String name;
     private final String description;
     private final DiscordCommand.Scope scope;
     private final DiscordCommand.Type type;
     private final boolean slashDiffer;
+    private final boolean isPublic;
     @Setter
     private Object object;
     private final Method method;
@@ -57,15 +63,20 @@ public class Command {
         this.getMethod().invoke(this.getObject(), params);
     }
 
-    public void register(JDA jda){
+    public void register(JDA jda, Optional<Guild> optionalGuild){
+        this.register(jda, optionalGuild);
+    }
+
+    public void register(JDA jda, Optional<Guild> optionalGuild, @Nullable Consumer<? super Command> success){
         CommandData commandData = new CommandData(name, this.getDescription());
+        commandData.setDefaultEnabled(this.isPublic);
         for (Parameter parameter : this.getMethod().getParameters()) {
             DiscordParameter discordParameter = parameter.getAnnotation(DiscordParameter.class);
             commandData.addOption(ParameterTypes.MAP.get(parameter.getType()), discordParameter.name(), discordParameter.description(), discordParameter.required());
         }
         if (this.getScope().equals(DiscordCommand.Scope.SERVER)) {
-            jda.getGuilds().forEach(guild -> {
-                guild.upsertCommand(commandData).complete();
+            optionalGuild.ifPresent(guild -> {
+                guild.upsertCommand(commandData).queue(success);
             });
         }else {
             jda.upsertCommand(commandData).complete();

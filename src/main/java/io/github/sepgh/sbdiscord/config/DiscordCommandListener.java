@@ -1,6 +1,6 @@
 package io.github.sepgh.sbdiscord.config;
 
-import io.github.sepgh.sbdiscord.command.Command;
+import io.github.sepgh.sbdiscord.command.CommandEntity;
 import io.github.sepgh.sbdiscord.command.CommandRegistry;
 import io.github.sepgh.sbdiscord.command.context.CommandContextHolder;
 import io.github.sepgh.sbdiscord.command.context.DefaultContextImpl;
@@ -35,7 +35,7 @@ public class DiscordCommandListener extends ListenerAdapter {
         String message = event.getMessage().getContentStripped();
         if (message.startsWith("" + sbDiscordProperties.getBasicCommandSignature())) {
             String[] commandAndParameters = getCommandAndParameters(message);
-            Optional<Command> optionalCommand = this.commandRegistry.findCommandByName(commandAndParameters[0]);
+            Optional<CommandEntity> optionalCommand = this.commandRegistry.findCommandByName(commandAndParameters[0]);
             if (optionalCommand.isPresent()) {
                 try {
                     optionalCommand.get().call(commandAndParameters[1]);
@@ -53,13 +53,13 @@ public class DiscordCommandListener extends ListenerAdapter {
         CommandContextHolder.setContext(DefaultContextImpl.builder()
                 .slashCommandEvent(Optional.of(event))
                 .build());
-        Optional<Command> optionalCommand = this.commandRegistry.findCommandByName(event.getName());
+        Optional<CommandEntity> optionalCommand = this.commandRegistry.findCommandByName(event.getName());
         if (optionalCommand.isPresent()){
-            Command command = optionalCommand.get();
-            if (command.isSlashDiffer())
+            CommandEntity commandEntity = optionalCommand.get();
+            if (commandEntity.isSlashDiffer())
                 event.deferReply().queue();
             try {
-                command.call(event.getOptions());
+                commandEntity.call(event.getOptions());
             } catch (CommandParseException e) {
                 e.printStackTrace(); //todo: reply with parse exception explained
             } catch (Exception e) {

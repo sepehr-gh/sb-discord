@@ -4,7 +4,7 @@ package io.github.sepgh.sbdiscord;
 import io.github.sepgh.sbdiscord.config.SpringbootDiscordAutoConfiguration;
 import io.github.sepgh.sbdiscord.controllers.TestController;
 import io.github.sepgh.sbdiscord.exceptions.CommandParseException;
-import io.github.sepgh.sbdiscord.command.Command;
+import io.github.sepgh.sbdiscord.command.CommandEntity;
 import io.github.sepgh.sbdiscord.command.CommandRegistry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,29 +19,29 @@ import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {SpringbootDiscordAutoConfiguration.class, SpringConfiguration.class})
-public class CommandCallerTest {
+public class CommandEntityCallerTest {
     private final TestController mockTestController;
     private final CommandRegistry commandRegistry;
 
     @Autowired
-    public CommandCallerTest(CommandRegistry commandRegistry) {
+    public CommandEntityCallerTest(CommandRegistry commandRegistry) {
         this.commandRegistry = Mockito.mock(CommandRegistry.class);
         this.mockTestController = Mockito.mock(TestController.class);
 
-        Command parameterCommand = commandRegistry.findCommandByName("parametercommand").get();
-        parameterCommand.setObject(this.mockTestController);
+        CommandEntity parameterCommandEntity = commandRegistry.findCommandByName("parametercommand").get();
+        parameterCommandEntity.setObject(this.mockTestController);
 
-        Command noParameterCommand = commandRegistry.findCommandByName("noparam").get();
-        noParameterCommand.setObject(this.mockTestController);
+        CommandEntity noParameterCommandEntity = commandRegistry.findCommandByName("noparam").get();
+        noParameterCommandEntity.setObject(this.mockTestController);
 
 
-        Mockito.when(this.commandRegistry.findCommandByName("parametercommand")).thenReturn(Optional.of(parameterCommand));
-        Mockito.when(this.commandRegistry.findCommandByName("noparam")).thenReturn(Optional.of(noParameterCommand));
+        Mockito.when(this.commandRegistry.findCommandByName("parametercommand")).thenReturn(Optional.of(parameterCommandEntity));
+        Mockito.when(this.commandRegistry.findCommandByName("noparam")).thenReturn(Optional.of(noParameterCommandEntity));
     }
 
     @Test
     public void testMethodCall() throws CommandParseException, InvocationTargetException, IllegalAccessException {
-        Optional<Command> optionalCommand = this.commandRegistry.findCommandByName("parametercommand");
+        Optional<CommandEntity> optionalCommand = this.commandRegistry.findCommandByName("parametercommand");
         assert optionalCommand.isPresent();
         optionalCommand.get().call("A B");
         Mockito.verify(this.mockTestController).parameterCommand("A", "B", "4");
@@ -58,7 +58,7 @@ public class CommandCallerTest {
 
     @Test
     public void noParamMethodCall() throws CommandParseException, InvocationTargetException, IllegalAccessException {
-        Optional<Command> optionalCommand = this.commandRegistry.findCommandByName("noparam");
+        Optional<CommandEntity> optionalCommand = this.commandRegistry.findCommandByName("noparam");
         assert optionalCommand.isPresent();
         optionalCommand.get().call(" ");
         Mockito.verify(this.mockTestController).noparam();

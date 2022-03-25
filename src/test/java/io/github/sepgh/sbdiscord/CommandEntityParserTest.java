@@ -1,9 +1,9 @@
 package io.github.sepgh.sbdiscord;
 
+import io.github.sepgh.sbdiscord.command.CommandEntity;
 import io.github.sepgh.sbdiscord.config.SpringbootDiscordAutoConfiguration;
 import io.github.sepgh.sbdiscord.exceptions.CommandParseException;
 import io.github.sepgh.sbdiscord.parser.CommandParser;
-import io.github.sepgh.sbdiscord.command.Command;
 import io.github.sepgh.sbdiscord.command.CommandRegistry;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,15 +17,15 @@ import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {SpringbootDiscordAutoConfiguration.class, SpringConfiguration.class})
-public class CommandParserTest {
+public class CommandEntityParserTest {
     private final CommandParser parser;
 
-    public CommandParserTest(@Autowired CommandRegistry commandRegistry) {
-        Optional<Command> optionalCommand = commandRegistry.findCommandByName("parametercommand");
+    public CommandEntityParserTest(@Autowired CommandRegistry commandRegistry) {
+        Optional<CommandEntity> optionalCommand = commandRegistry.findCommandByName("parametercommand");
         Assertions.assertTrue(optionalCommand.isPresent(), String.format("%s command is not present", "parametercommand"));
 
-        Command command = optionalCommand.get();
-        this.parser = command.getParser();
+        CommandEntity commandEntity = optionalCommand.get();
+        this.parser = commandEntity.getParser();
     }
 
     @Test
