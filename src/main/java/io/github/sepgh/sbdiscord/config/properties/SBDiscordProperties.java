@@ -18,6 +18,7 @@ public class SBDiscordProperties {
     private Character basicCommandSignature = '!';
     private boolean enabled;
     private String token;
+    private String commandPrivilegesFile;
     private Long guildId;
     private List<CommandPrivileges> commandPrivileges = new ArrayList<>();
 
