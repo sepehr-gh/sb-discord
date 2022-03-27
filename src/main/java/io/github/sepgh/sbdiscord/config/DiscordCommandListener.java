@@ -49,7 +49,7 @@ public class DiscordCommandListener extends ListenerAdapter {
             try {
                 commandEntity.call(commandAndParameters[1]);
             } catch (CommandParseException e) {
-                e.printStackTrace(); //todo: reply with parse exception explained
+                event.getMessage().reply(e.getMessage()).queue();
             } catch (Exception e) {
                 log.error(String.format("Failed to handle message: %s", message), e);
             }
@@ -62,19 +62,18 @@ public class DiscordCommandListener extends ListenerAdapter {
                 .slashCommandEvent(Optional.of(event))
                 .build());
         Optional<CommandEntity> optionalCommand = this.commandRegistry.findCommandByName(event.getName());
-        if (optionalCommand.isPresent()){
-            CommandEntity commandEntity = optionalCommand.get();
-            if (commandEntity.isSlashDiffer())
-                event.deferReply().queue();
-            try {
-                commandEntity.call(event.getOptions());
-            } catch (CommandParseException e) {
-                e.printStackTrace(); //todo: reply with parse exception explained
-            } catch (Exception e) {
-                log.error(String.format("Failed to handle command: %s", event.getName()), e);
-            }
-        }else {
-            //todo: return command is missing
+        if (!optionalCommand.isPresent()) {
+            return;
+        }
+        CommandEntity commandEntity = optionalCommand.get();
+        if (commandEntity.isSlashDiffer())
+            event.deferReply().queue();
+        try {
+            commandEntity.call(event.getOptions());
+        } catch (CommandParseException e) {
+            log.error(String.format("Failed to parse slash command: %s", event.getCommandString()), e);
+        } catch (Exception e) {
+            log.error(String.format("Failed to handle command: %s", event.getName()), e);
         }
     }
 
