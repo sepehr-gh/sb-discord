@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>io.github.sepgh</groupId>
 	<artifactId>discord-commands-starter</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<name>Spring-boot Discord Commands Starter</name>
 	<description>Spring-boot integration for discord commands</description>
 	<packaging>jar</packaging>
@@ -33,7 +33,7 @@
 	<scm>
 		<connection>scm:git:git://github.com/sepgh/sbdiscord.git</connection>
 		<developerConnection>scm:git:ssh://github.com:sepgh/sbdiscord.git</developerConnection>
-		<url>http://github.com/sepgh/sbdiscord/tree/main</url>
+		<url>https://github.com/sepgh/sbdiscord/tree/main</url>
 	</scm>
 
 	<distributionManagement>
