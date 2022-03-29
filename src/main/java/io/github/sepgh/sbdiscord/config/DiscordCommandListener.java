@@ -72,8 +72,10 @@ public class DiscordCommandListener extends ListenerAdapter {
             commandEntity.call(event.getOptions());
         } catch (CommandParseException e) {
             log.error(String.format("Failed to parse slash command: %s", event.getCommandString()), e);
+            event.reply("Failed to handle command. Parsing Exception: " + e.getMessage()).queue();
         } catch (Exception e) {
             log.error(String.format("Failed to handle command: %s", event.getName()), e);
+            event.reply("Failed to handle command. Contact the administrator.").queue();
         }
     }
 
