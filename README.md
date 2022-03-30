@@ -9,7 +9,7 @@ maven:
 <dependency>
   <groupId>io.github.sepgh</groupId>
   <artifactId>discord-commands-starter</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.1.3</version>
 </dependency>
 ```
 
