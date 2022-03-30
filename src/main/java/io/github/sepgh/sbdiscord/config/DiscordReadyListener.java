@@ -30,7 +30,7 @@ public class DiscordReadyListener extends ListenerAdapter {
     private final ApplicationContext applicationContext;
     private final CommandRegistry commandRegistry;
     private final SBDiscordProperties sbDiscordProperties;
-    private static final String ALPHANUMERIC_PATTERN = "^[a-zA-Z0-9]+$";
+    private static final String ALPHANUMERIC_PATTERN = "^[a-zA-Z0-9_-]*$";
     private Guild guild;
 
     @Autowired
@@ -109,12 +109,12 @@ public class DiscordReadyListener extends ListenerAdapter {
             return false;
         }
         if (!annotation.name().matches(ALPHANUMERIC_PATTERN)){
-            log.error(String.format("Command %s can't be registered because the DiscordCommand name is not alphanumeric", commandMethod.getName()));
+            log.error(String.format("Command %s can't be registered because the DiscordCommand name is not alphanumeric", annotation.name()));
             return false;
         }
         for (Parameter parameter : commandMethod.getParameters()) {
             if (!ParameterTypes.ACCEPTABLE.contains(parameter.getType())){
-                log.error(String.format("Command %s can't be registered because the parameter types are not accepted", commandMethod.getName()));
+                log.error(String.format("Command %s can't be registered because the parameter types are not accepted", annotation.name()));
                 return false;
             }
         }
