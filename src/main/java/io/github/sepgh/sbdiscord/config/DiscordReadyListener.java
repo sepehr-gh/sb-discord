@@ -75,6 +75,7 @@ public class DiscordReadyListener extends ListenerAdapter {
                         .isPublic(sbDiscordProperties.isPublicCommand(annotation.name()))
                         .type(annotation.type())
                         .slashDiffer(annotation.slashDiffer())
+                        .ephemeralDiffer(annotation.ephemeralDiffer())
                         .object(discordControllerBean)
                         .name(annotation.name())
                         .description(annotation.description())

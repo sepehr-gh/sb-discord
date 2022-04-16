@@ -18,6 +18,7 @@ public @interface DiscordCommand {
     Scope scope() default Scope.SERVER;
     Type type() default Type.SLASH;
     boolean slashDiffer() default true;
+    boolean ephemeralDiffer() default false;
 
     enum Scope {
         SERVER, USER

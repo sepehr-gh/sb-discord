@@ -32,6 +32,7 @@ public class CommandEntity {
     private final DiscordCommand.Scope scope;
     private final DiscordCommand.Type type;
     private final boolean slashDiffer;
+    private final boolean ephemeralDiffer;
     private final boolean isPublic;
     @Setter
     private Object object;

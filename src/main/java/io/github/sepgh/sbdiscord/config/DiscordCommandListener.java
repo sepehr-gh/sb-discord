@@ -67,7 +67,7 @@ public class DiscordCommandListener extends ListenerAdapter {
         }
         CommandEntity commandEntity = optionalCommand.get();
         if (commandEntity.isSlashDiffer())
-            event.deferReply().queue();
+            event.deferReply(commandEntity.isEphemeralDiffer()).queue();
         try {
             commandEntity.call(event.getOptions());
         } catch (CommandParseException e) {
